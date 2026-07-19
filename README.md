@@ -1,8 +1,8 @@
-# FedaPay integration skill
+# fedapay-skill
 
-A Claude Code / agent **skill** for integrating [FedaPay](https://fedapay.com) payments (mobile money & card, Bénin & West Africa) into a **webapp/SaaS** or a **mobile app** — the right way, with server-side verification baked in.
+A portable agent skill for integrating **FedaPay** payments (mobile money & card, Bénin & West Africa) into a **webapp/SaaS** or a **mobile app** — usable by any AI coding agent.
 
-Built from the official FedaPay documentation. The skill teaches the agent the one spine that matters — **create → token → pay → verify** — and its cardinal rule: **`approved` server-side, or it didn't happen.**
+It encodes the one spine that keeps a FedaPay integration safe: **create → token → pay → verify**, with its cardinal rule — **`approved` server-side, or it didn't happen.** The `callback_url` status and the Checkout.js `onComplete` result are signals, not proof.
 
 ## What it covers
 
@@ -14,26 +14,24 @@ Built from the official FedaPay documentation. The skill teaches the agent the o
 - **Webhooks** — `X-FEDAPAY-SIGNATURE` verification, events, retries, idempotency, replay protection
 - **Sandbox → live** — test numbers, statuses, go-live checklist
 
+Written against the FedaPay **API v1** and **Checkout.js v1.1.7**. Verify package/CDN versions (npm/composer/gem) before shipping.
+
 ## Install
 
-The skill is a folder named `fedapay` containing `SKILL.md` + `references/`. Put it where your agent looks for skills.
-
-**Claude Code (personal skills):**
+**With [skillkit](https://github.com/skillkit) (adapts to your agent automatically):**
 
 ```bash
-git clone https://github.com/Perempty/fedapay-skill.git /tmp/fedapay-skill
-mkdir -p ~/.claude/skills/fedapay
-cp /tmp/fedapay-skill/SKILL.md ~/.claude/skills/fedapay/
-cp -r /tmp/fedapay-skill/references ~/.claude/skills/fedapay/
+skillkit install Perempty/fedapay-skill --skill=fedapay
 ```
 
-**Project skills** (share with a repo): copy the same into `.claude/skills/fedapay/` inside your project.
-
-One-liner (clone + install personal):
+**Manual copy (any agent that reads a skills folder):**
 
 ```bash
-bash <(curl -sSL https://raw.githubusercontent.com/Perempty/fedapay-skill/main/install.sh)
+git clone https://github.com/Perempty/fedapay-skill
+cp -r fedapay-skill/fedapay ~/.claude/skills/   # or your agent's skills dir
 ```
+
+The skill is a single `fedapay/SKILL.md` plus `fedapay/references/*.md` in plain Markdown — copy the folder anywhere an agent can read it.
 
 ## Use
 
@@ -46,13 +44,14 @@ The agent invokes the skill and follows the 6 integration steps, pulling the rig
 ## Layout
 
 ```
-SKILL.md              # the spine: cardinal rule, statuses, keys, quickstart, 6 steps
-references/
-  server.md           # Node/PHP/Ruby: create, token, verify, no-redirect
-  checkout.md         # Checkout.js: button, embed, React/Angular, data-attrs, domain auth
-  webhooks.md         # signature verification, events, retries, idempotency
-  mobile.md           # Flutter/RN/native WebView patterns
-  sandbox.md          # test numbers, statuses, go-live checklist
+fedapay/
+  SKILL.md              # the spine: cardinal rule, statuses, keys, quickstart, 6 steps
+  references/
+    server.md           # Node/PHP/Ruby: create, token, verify, no-redirect
+    checkout.md         # Checkout.js: button, embed, React/Angular, data-attrs, domain auth
+    webhooks.md         # signature verification, events, retries, idempotency
+    mobile.md           # Flutter/RN/native WebView patterns
+    sandbox.md          # test numbers, statuses, go-live checklist
 ```
 
 ## Source
@@ -61,4 +60,4 @@ Written against **FedaPay API v1** and **Checkout.js v1.1.7**. Verify package/CD
 
 ## License
 
-MIT © Perempty
+MIT © Perempty — see [LICENSE](LICENSE).
